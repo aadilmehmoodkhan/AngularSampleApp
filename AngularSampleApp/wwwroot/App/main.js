@@ -45,22 +45,41 @@ module.exports = "<app-top-navigation></app-top-navigation>\n<div class=\"contai
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_account_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/account.service */ "./src/app/services/account.service.ts");
+/* harmony import */ var _services_localstore_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/localstore.service */ "./src/app/services/localstore.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
-        this.title = 'ClientApp';
+    function AppComponent(accountService, localStore) {
+        this.accountService = accountService;
+        this.localStore = localStore;
+        this.title = 'Freelance World';
     }
+    AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.accountService.getUserName()
+            .subscribe(function (o) {
+            var username = o.data;
+            _this.localStore.setLoggedInUserName(username);
+        });
+    };
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html")
-        })
+        }),
+        __metadata("design:paramtypes", [_services_account_service__WEBPACK_IMPORTED_MODULE_1__["AccountService"],
+            _services_localstore_service__WEBPACK_IMPORTED_MODULE_2__["LocalStore"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -87,13 +106,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_top_navigation_top_navigation_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/top-navigation/top-navigation.component */ "./src/app/components/top-navigation/top-navigation.component.ts");
 /* harmony import */ var _components_home_home_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/home/home.component */ "./src/app/components/home/home.component.ts");
 /* harmony import */ var _components_profile_profile_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/profile/profile.component */ "./src/app/components/profile/profile.component.ts");
-/* harmony import */ var _services_test_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/test.service */ "./src/app/services/test.service.ts");
+/* harmony import */ var _services_account_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/account.service */ "./src/app/services/account.service.ts");
+/* harmony import */ var _services_localstore_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services/localstore.service */ "./src/app/services/localstore.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -122,7 +143,11 @@ var AppModule = /** @class */ (function () {
                     { path: "profile", component: _components_profile_profile_component__WEBPACK_IMPORTED_MODULE_7__["ProfileComponent"] }
                 ])
             ],
-            providers: [_services_test_service__WEBPACK_IMPORTED_MODULE_8__["TestService"]],
+            providers: [
+                _services_account_service__WEBPACK_IMPORTED_MODULE_8__["AccountService"],
+                { provide: _services_localstore_service__WEBPACK_IMPORTED_MODULE_9__["LOCAL_STORAGE_TOKEN"], useValue: window.localStorage },
+                _services_localstore_service__WEBPACK_IMPORTED_MODULE_9__["LocalStore"]
+            ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
         })
     ], AppModule);
@@ -211,7 +236,7 @@ module.exports = "<p>\n  profile works!\n</p>\n<button class=\"btn btn-primary\"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfileComponent", function() { return ProfileComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_services_test_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/test.service */ "./src/app/services/test.service.ts");
+/* harmony import */ var src_app_services_account_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/account.service */ "./src/app/services/account.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -224,13 +249,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ProfileComponent = /** @class */ (function () {
-    function ProfileComponent(testService) {
-        this.testService = testService;
+    function ProfileComponent(accountService) {
+        this.accountService = accountService;
     }
     ProfileComponent.prototype.ngOnInit = function () {
     };
     ProfileComponent.prototype.healthCheck = function () {
-        this.testService.healthCheck()
+        this.accountService.healthCheck()
             .subscribe(function (rc) { return console.log(rc); });
     };
     ProfileComponent = __decorate([
@@ -239,7 +264,7 @@ var ProfileComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./profile.component.html */ "./src/app/components/profile/profile.component.html"),
             styles: [__webpack_require__(/*! ./profile.component.css */ "./src/app/components/profile/profile.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_services_test_service__WEBPACK_IMPORTED_MODULE_1__["TestService"]])
+        __metadata("design:paramtypes", [src_app_services_account_service__WEBPACK_IMPORTED_MODULE_1__["AccountService"]])
     ], ProfileComponent);
     return ProfileComponent;
 }());
@@ -255,7 +280,7 @@ var ProfileComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n    <a class=\"navbar-brand\" href=\"#\">Freelance World</a>\n    <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/\">Home</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"profile\">Profle</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" href=\"/App/Logout\">Logout</a>\n            </li>\n        </ul>\n    </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n    <a class=\"navbar-brand\" href=\"#\">Freelance World</a>\n    <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/\">Home</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"profile\">Profle</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" href=\"/App/Logout\">Logout ({{userName}})</a>\n            </li>\n        </ul>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -270,21 +295,32 @@ module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TopNavigationComponent", function() { return TopNavigationComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_localstore_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/localstore.service */ "./src/app/services/localstore.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 var TopNavigationComponent = /** @class */ (function () {
-    function TopNavigationComponent() {
+    function TopNavigationComponent(localStore) {
+        this.localStore = localStore;
+        this.userName = "";
     }
+    TopNavigationComponent.prototype.ngOnInit = function () {
+        this.userName = this.localStore.getLoggedInUserName();
+    };
     TopNavigationComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-top-navigation',
             template: __webpack_require__(/*! ./top-navigation.component.html */ "./src/app/components/top-navigation/top-navigation.component.html")
-        })
+        }),
+        __metadata("design:paramtypes", [src_app_services_localstore_service__WEBPACK_IMPORTED_MODULE_1__["LocalStore"]])
     ], TopNavigationComponent);
     return TopNavigationComponent;
 }());
@@ -312,16 +348,16 @@ var config = {
 
 /***/ }),
 
-/***/ "./src/app/services/test.service.ts":
-/*!******************************************!*\
-  !*** ./src/app/services/test.service.ts ***!
-  \******************************************/
-/*! exports provided: TestService */
+/***/ "./src/app/services/account.service.ts":
+/*!*********************************************!*\
+  !*** ./src/app/services/account.service.ts ***!
+  \*********************************************/
+/*! exports provided: AccountService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TestService", function() { return TestService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AccountService", function() { return AccountService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/app/config.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
@@ -337,23 +373,73 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var TestService = /** @class */ (function () {
-    function TestService(http) {
+var AccountService = /** @class */ (function () {
+    function AccountService(http) {
         this.http = http;
     }
-    TestService.prototype.serviceBase = function () {
-        return _config__WEBPACK_IMPORTED_MODULE_1__["config"].services.basePath + "/test";
+    AccountService.prototype.getApiMethodLink = function (method) {
+        return _config__WEBPACK_IMPORTED_MODULE_1__["config"].services.basePath + "/account/" + method;
     };
-    TestService.prototype.healthCheck = function () {
-        return this.http.get(this.serviceBase() + "/hc");
+    AccountService.prototype.healthCheck = function () {
+        return this.http.get(this.getApiMethodLink("hc"));
     };
-    TestService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
+    AccountService.prototype.getUserName = function () {
+        return this.http.get(this.getApiMethodLink("getUserName"));
+    };
+    AccountService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
-    ], TestService);
-    return TestService;
+    ], AccountService);
+    return AccountService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/localstore.service.ts":
+/*!************************************************!*\
+  !*** ./src/app/services/localstore.service.ts ***!
+  \************************************************/
+/*! exports provided: LOCAL_STORAGE_TOKEN, LocalStore */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOCAL_STORAGE_TOKEN", function() { return LOCAL_STORAGE_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalStore", function() { return LocalStore; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+var LOCAL_STORAGE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]("localStorage");
+var LocalStore = /** @class */ (function () {
+    function LocalStore(winLocalStorage) {
+        this.winLocalStorage = winLocalStorage;
+        this.USER_NAME = "USER_NAME";
+    }
+    LocalStore.prototype.getLoggedInUserName = function () {
+        return this.winLocalStorage.getItem(this.USER_NAME);
+    };
+    LocalStore.prototype.setLoggedInUserName = function (userName) {
+        this.winLocalStorage.setItem(this.USER_NAME, userName);
+    };
+    LocalStore = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(LOCAL_STORAGE_TOKEN)),
+        __metadata("design:paramtypes", [Storage])
+    ], LocalStore);
+    return LocalStore;
 }());
 
 
@@ -420,7 +506,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\adilk\Desktop\AngularSampleApp\AngularSampleApp\ClientApp\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! D:\Data\Freelancing\Farhan\AngularSampleApp\AngularSampleApp\ClientApp\src\main.ts */"./src/main.ts");
 
 
 /***/ })

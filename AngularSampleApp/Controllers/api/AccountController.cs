@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AngularSampleApp.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,17 @@ namespace AngularSampleApp.Controllers.api
 {
 	[Authorize]
 	[Route("api/[controller]")]
-    public class TestController : ControllerBase
+    public class AccountController : ControllerBase
     {
-		[HttpGet]
 		[Route("hc")]
 		public async Task<IActionResult> HealthCheck()
 			=> await Task.Run<IActionResult>(() => Ok(new { Message = "Health Check Fine" }));
+
+
+		[Route("getUserName")]
+		public async Task<IActionResult> GetUserName()
+		{
+			return await Task.Run<IActionResult>(() => Ok(new { Data = User.Identity.Name }));
+		}
     }
 }

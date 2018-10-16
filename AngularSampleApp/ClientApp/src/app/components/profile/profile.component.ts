@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from 'src/app/services/test.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,14 +8,14 @@ import { TestService } from 'src/app/services/test.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private testService: TestService) { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {
     
   }
 
   healthCheck() {
-    this.testService.healthCheck()
+    this.accountService.healthCheck()
       .subscribe(rc => console.log(rc));
   }
 

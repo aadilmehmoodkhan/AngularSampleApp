@@ -7,7 +7,8 @@ import { AppComponent } from './app.component';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { TestService } from './services/test.service';
+import { AccountService } from './services/account.service';
+import { LOCAL_STORAGE_TOKEN, LocalStore } from './services/localstore.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,11 @@ import { TestService } from './services/test.service';
       { path: "profile", component: ProfileComponent }
     ])
   ],
-  providers: [TestService],
+  providers: [
+    AccountService,
+    { provide: LOCAL_STORAGE_TOKEN, useValue: window.localStorage },
+    LocalStore
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
