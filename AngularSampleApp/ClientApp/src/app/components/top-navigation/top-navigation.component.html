@@ -9,7 +9,7 @@
                 <a class="nav-link" routerLink="profile">Profle</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/App/Logout">Logout ({{userName}})</a>
+                <a class="nav-link" href="#" (click)="Logout()">Logout <span *ngIf="userName != ''">({{userName}})</span></a>
             </li>
         </ul>
     </div>

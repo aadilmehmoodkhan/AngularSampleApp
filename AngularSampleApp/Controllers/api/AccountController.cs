@@ -19,10 +19,11 @@ namespace AngularSampleApp.Controllers.api
 			=> await Task.Run<IActionResult>(() => Ok(new { Message = "Health Check Fine" }));
 
 
-		[Route("getUserName")]
-		public async Task<IActionResult> GetUserName()
-		{
-			return await Task.Run<IActionResult>(() => Ok(new { Data = User.Identity.Name }));
-		}
+		[Route("loginPayload")]
+		public async Task<IActionResult> GetLoginPayload()
+			=> await Task.Run<IActionResult>(() => Ok(new
+			{
+				userName = User.Identity.Name
+			}));
     }
 }

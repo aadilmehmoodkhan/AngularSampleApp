@@ -45,41 +45,22 @@ module.exports = "<app-top-navigation></app-top-navigation>\n<div class=\"contai
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _services_account_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/account.service */ "./src/app/services/account.service.ts");
-/* harmony import */ var _services_localstore_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/localstore.service */ "./src/app/services/localstore.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent(accountService, localStore) {
-        this.accountService = accountService;
-        this.localStore = localStore;
+    function AppComponent() {
         this.title = 'Freelance World';
     }
-    AppComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.accountService.getUserName()
-            .subscribe(function (o) {
-            var username = o.data;
-            _this.localStore.setLoggedInUserName(username);
-        });
-    };
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html")
-        }),
-        __metadata("design:paramtypes", [_services_account_service__WEBPACK_IMPORTED_MODULE_1__["AccountService"],
-            _services_localstore_service__WEBPACK_IMPORTED_MODULE_2__["LocalStore"]])
+        })
     ], AppComponent);
     return AppComponent;
 }());
@@ -280,7 +261,7 @@ var ProfileComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n    <a class=\"navbar-brand\" href=\"#\">Freelance World</a>\n    <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/\">Home</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"profile\">Profle</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" href=\"/App/Logout\">Logout ({{userName}})</a>\n            </li>\n        </ul>\n    </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-md navbar-dark bg-dark\">\n    <a class=\"navbar-brand\" href=\"#\">Freelance World</a>\n    <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n        <ul class=\"navbar-nav mr-auto\">\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"/\">Home</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" routerLink=\"profile\">Profle</a>\n            </li>\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" href=\"#\" (click)=\"Logout()\">Logout <span *ngIf=\"userName != ''\">({{userName}})</span></a>\n            </li>\n        </ul>\n    </div>\n</nav>"
 
 /***/ }),
 
@@ -296,6 +277,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TopNavigationComponent", function() { return TopNavigationComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var src_app_services_localstore_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/localstore.service */ "./src/app/services/localstore.service.ts");
+/* harmony import */ var src_app_services_account_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/account.service */ "./src/app/services/account.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -307,20 +289,34 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var TopNavigationComponent = /** @class */ (function () {
-    function TopNavigationComponent(localStore) {
+    function TopNavigationComponent(localStore, accountService) {
         this.localStore = localStore;
+        this.accountService = accountService;
         this.userName = "";
     }
     TopNavigationComponent.prototype.ngOnInit = function () {
-        this.userName = this.localStore.getLoggedInUserName();
+        var _this = this;
+        var loginPayLoad = this.localStore.getLoginPayload();
+        if (loginPayLoad == null) {
+            this.accountService.getLoginPayload()
+                .subscribe(function (data) {
+                _this.localStore.setLoginPayload(data);
+                _this.userName = _this.localStore.getLoginPayload().userName;
+            });
+        }
+    };
+    TopNavigationComponent.prototype.Logout = function () {
+        this.localStore.removePayload();
+        window.location.href = "/App/Logout";
     };
     TopNavigationComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-top-navigation',
             template: __webpack_require__(/*! ./top-navigation.component.html */ "./src/app/components/top-navigation/top-navigation.component.html")
         }),
-        __metadata("design:paramtypes", [src_app_services_localstore_service__WEBPACK_IMPORTED_MODULE_1__["LocalStore"]])
+        __metadata("design:paramtypes", [src_app_services_localstore_service__WEBPACK_IMPORTED_MODULE_1__["LocalStore"], src_app_services_account_service__WEBPACK_IMPORTED_MODULE_2__["AccountService"]])
     ], TopNavigationComponent);
     return TopNavigationComponent;
 }());
@@ -383,8 +379,8 @@ var AccountService = /** @class */ (function () {
     AccountService.prototype.healthCheck = function () {
         return this.http.get(this.getApiMethodLink("hc"));
     };
-    AccountService.prototype.getUserName = function () {
-        return this.http.get(this.getApiMethodLink("getUserName"));
+    AccountService.prototype.getLoginPayload = function () {
+        return this.http.get(this.getApiMethodLink("loginPayload"));
     };
     AccountService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -409,6 +405,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOCAL_STORAGE_TOKEN", function() { return LOCAL_STORAGE_TOKEN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalStore", function() { return LocalStore; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _account_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./account.service */ "./src/app/services/account.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -422,22 +419,28 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 
+
 var LOCAL_STORAGE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]("localStorage");
 var LocalStore = /** @class */ (function () {
-    function LocalStore(winLocalStorage) {
+    function LocalStore(winLocalStorage, accountService) {
         this.winLocalStorage = winLocalStorage;
-        this.USER_NAME = "USER_NAME";
+        this.accountService = accountService;
+        this.LoginPayload = "LoginPayload";
     }
-    LocalStore.prototype.getLoggedInUserName = function () {
-        return this.winLocalStorage.getItem(this.USER_NAME);
+    LocalStore.prototype.getLoginPayload = function () {
+        return JSON.parse(this.winLocalStorage.getItem(this.LoginPayload));
     };
-    LocalStore.prototype.setLoggedInUserName = function (userName) {
-        this.winLocalStorage.setItem(this.USER_NAME, userName);
+    LocalStore.prototype.setLoginPayload = function (value) {
+        this.winLocalStorage.setItem(this.LoginPayload, JSON.stringify(value));
+    };
+    LocalStore.prototype.removePayload = function () {
+        this.winLocalStorage.removeItem(this.LoginPayload);
     };
     LocalStore = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(LOCAL_STORAGE_TOKEN)),
-        __metadata("design:paramtypes", [Storage])
+        __metadata("design:paramtypes", [Storage,
+            _account_service__WEBPACK_IMPORTED_MODULE_1__["AccountService"]])
     ], LocalStore);
     return LocalStore;
 }());

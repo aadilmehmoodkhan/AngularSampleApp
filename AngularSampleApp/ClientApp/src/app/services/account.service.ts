@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { config } from '../config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LoginPayload } from '../model/LoginPayload';
 
 @Injectable()
 export class AccountService {
@@ -16,7 +17,7 @@ export class AccountService {
     return this.http.get(this.getApiMethodLink("hc"));
   }
 
-  getUserName(): Observable<any> {
-    return this.http.get<any>(this.getApiMethodLink("getUserName"));
+  getLoginPayload(): Observable<LoginPayload> {
+    return this.http.get<LoginPayload>(this.getApiMethodLink("loginPayload"));
   }
 }
